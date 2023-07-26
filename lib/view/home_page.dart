@@ -23,7 +23,7 @@ class Homepage extends ConsumerWidget {
             child: Column(
               children: [
                 CustomCupertinoNavBar(
-                  middle: const Text(
+                  middle: Text(
                     "Apple Notes",
                     style: CustomTextStyles.h2,
                   ),
