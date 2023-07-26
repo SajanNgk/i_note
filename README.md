@@ -1,10 +1,9 @@
 # i_note
 
-A new Flutter project.
+This is a Crud app using Cupertino only for iOS design using flutter_riverpod package and following MVVM architecture.
 
 ## Getting Started
-
-This project is a starting point for a Flutter application.
+As a beginner is flutter ,I made this app for practice and internship.
 
 A few resources to get you started if this is your first Flutter project:
 
