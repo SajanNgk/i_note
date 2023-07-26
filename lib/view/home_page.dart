@@ -10,11 +10,13 @@ class Homepage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+   
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
+       
         backgroundColor: AppColor.kwhite,
         border: null,
         middle: Text(

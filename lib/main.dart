@@ -3,15 +3,14 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:i_note/model/note_model.dart';
-import 'package:i_note/services/database_services.dart';
+
 import 'package:i_note/utils/common/colors.dart';
 import 'package:i_note/view/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
  
-  runApp(ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -34,7 +33,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: Homepage(),
+      home: const Homepage(),
     );
   }
 }

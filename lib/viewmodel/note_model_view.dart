@@ -2,9 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:i_note/model/note_model.dart';
 import 'package:i_note/services/database_services.dart';
 
-
-
-
 class NotesStateNotifier extends StateNotifier<List<Note>> {
   NotesStateNotifier() : super([]);
 
@@ -14,7 +11,9 @@ class NotesStateNotifier extends StateNotifier<List<Note>> {
   }
 
   void update(Note updatedNote) {
-    state = state.map((note) => note.id == updatedNote.id ? updatedNote : note).toList();
+    state = state
+        .map((note) => note.id == updatedNote.id ? updatedNote : note)
+        .toList();
     DatabaseService().saveNotes(state);
   }
 
