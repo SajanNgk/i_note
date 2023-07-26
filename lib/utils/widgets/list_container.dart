@@ -14,43 +14,55 @@ class ListContainerWidget extends ConsumerWidget {
     var notes = ref.watch(noteStateNotifierProvider);
     notes.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
+    // Group notes by date
+    Map<String, List<Note>> groupedNotes = {};
+    for (var note in notes) {
+      String formattedDate = DateFormat('MMMM dd, yyyy').format(note.createdAt);
+      if (!groupedNotes.containsKey(formattedDate)) {
+        groupedNotes[formattedDate] = [];
+      }
+      groupedNotes[formattedDate]!.add(note);
+    }
+
     return Container(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (var note in notes)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      DateFormat('MMMM dd, yyyy').format(note
-                          .createdAt), // Display the createdAt date of the notes
-                      style: CustomTextStyles.h3,
-                    ),
-                    const Spacer(),
-                    CupertinoButton(
-                      onPressed: () {},
-                      child: Text(
-                        'View All',
-                        style: CustomTextStyles.bodyRegular,
-                      ),
-                    ),
-                  ],
+      child: CustomScrollView(
+        slivers: [
+          for (var date in groupedNotes.keys)
+            CupertinoSliverNavigationBar(
+              largeTitle: Text(date, style: CustomTextStyles.h3),
+              trailing: CupertinoButton(
+                onPressed: () {},
+                child: Text(
+                  'View All',
+                  style: CustomTextStyles.bodyRegular.copyWith(
+                    color: CupertinoColors.systemBlue,
+                  ),
                 ),
-                const SizedBox(height: 8),
-                CustomListItemWidget(
-                  note: note,
-                  onDelete: () {
-                    ref
-                        .read(noteStateNotifierProvider.notifier)
-                        .delete(note.id);
-                  },
-                ),
-              ],
+              ),
             ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                var date = groupedNotes.keys.elementAt(index);
+                var notesForDate = groupedNotes[date]!;
+                return Column(
+                  children: [
+                    for (var note in notesForDate)
+                      CustomListItemWidget(
+                        note: note,
+                        onDelete: () {
+                          ref
+                              .read(noteStateNotifierProvider.notifier)
+                              .delete(note.id);
+                        },
+                      ),
+                  ],
+                );
+              },
+              childCount: groupedNotes.length,
+            ),
+          ),
         ],
       ),
     );

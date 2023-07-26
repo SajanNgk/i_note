@@ -2,19 +2,17 @@
 import 'dart:convert';
 
 class Note {
-  final int? id;
+  final int id;
   final String? title;
   final String? body;
   final DateTime createdAt;
 
   Note({
-    this.id,
+    this.id = 0, 
     this.title,
     this.body,
     required this.createdAt,
   });
-
- 
 
   Note copyWith({
     int? id,
@@ -41,7 +39,7 @@ class Note {
 
   factory Note.fromMap(Map<String, dynamic> map) {
     return Note(
-      id: map['id'] != null ? map['id'] as int : null,
+      id: map['id'] as int,
       title: map['title'] != null ? map['title'] as String : null,
       body: map['body'] != null ? map['body'] as String : null,
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),

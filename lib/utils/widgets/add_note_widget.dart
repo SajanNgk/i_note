@@ -38,7 +38,7 @@ class AddNoteForm extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             Container(
-              color: CupertinoColors.white, // Set the background color to white
+              color: CupertinoColors.white, 
               child: CupertinoTextFormFieldRow(
                 controller: _bodyController,
                 placeholder: 'Enter your words',

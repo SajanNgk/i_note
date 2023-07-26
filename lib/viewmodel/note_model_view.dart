@@ -9,12 +9,16 @@ class NoteStateNotifier extends StateNotifier<List<Note>> {
     state = await DatabaseService.getNotes();
   }
 
-  void add(Note note) async {
-    state.add(note);
+  Future<void> add(Note note) async {
+    if (note.id == 0) {
+      final id = DateTime.now().millisecondsSinceEpoch;
+      note = note.copyWith(id: id);
+    }
+    state = [...state, note];
     await DatabaseService.insert(note);
   }
 
-  void update(Note updatedNote) async {
+  Future<void> update(Note updatedNote) async {
     final index = state.indexWhere((note) => note.id == updatedNote.id);
     if (index != -1) {
       state[index] = updatedNote;
@@ -22,8 +26,8 @@ class NoteStateNotifier extends StateNotifier<List<Note>> {
     }
   }
 
-  void delete(int? id) async {
-    await DatabaseService.delete(id);
-    state.removeWhere((note) => note.id == id);
+  Future<void> delete(int id) async {
+    state.removeWhere((note) => note.id == id); 
+    await DatabaseService.delete(id); 
   }
 }
