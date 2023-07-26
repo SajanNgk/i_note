@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:i_note/utils/common/colors.dart';
 import 'package:i_note/utils/common/textstyles.dart';
+import 'package:i_note/utils/widgets/custom_nav.dart';
 import 'package:i_note/utils/widgets/list_container.dart';
 import 'package:i_note/view/add_note.dart';
 
@@ -10,28 +11,24 @@ class Homepage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-   
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
 
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-       
-        backgroundColor: AppColor.kwhite,
-        border: null,
-        middle: Text(
-          "Apple Notes",
-          style: CustomTextStyles.h2,
-        ),
-      ),
       child: Stack(
         children: [
           Container(
             height: h,
             width: w,
-            child: const Column(
+            child: Column(
               children: [
-                Row(
+                CustomCupertinoNavBar(
+                  middle: const Text(
+                    "Apple Notes",
+                    style: CustomTextStyles.h2,
+                  ),
+                ),
+                const Row(
                   children: [
                     Padding(
                       padding: EdgeInsets.all(8.0),
@@ -48,7 +45,7 @@ class Homepage extends ConsumerWidget {
                     ),
                   ],
                 ),
-                Expanded(
+                const Expanded(
                   child: ListContainerWidget(),
                 ),
               ],

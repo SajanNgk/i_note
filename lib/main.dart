@@ -1,22 +1,20 @@
 import 'package:flutter/cupertino.dart';
 
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 import 'package:i_note/utils/common/colors.dart';
-import 'package:i_note/view/home_page.dart';
+
+import 'package:i_note/view/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
- 
-  runApp(const ProviderScope(child: MyApp()));
+
+  runApp( const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
@@ -29,11 +27,11 @@ class MyApp extends StatelessWidget {
         textTheme: CupertinoTextThemeData(
           textStyle: TextStyle(
             fontFamily: 'Poppins',
-            color: AppColor.kblack, // Customize text color
+            color: AppColor.kblack,
           ),
         ),
       ),
-      home: const Homepage(),
+      home:  const SplashScreen(),
     );
   }
 }
