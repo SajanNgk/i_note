@@ -1,48 +1,33 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class Note {
-  final int id;
+  final String id;
   final String? title;
   final String? body;
   final DateTime createdAt;
 
   Note({
-    this.id = 0, 
+    required this.id,
     this.title,
     this.body,
     required this.createdAt,
   });
 
-  Note copyWith({
-    int? id,
-    String? title,
-    String? body,
-    DateTime? createdAt,
-  }) {
-    return Note(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      body: body ?? this.body,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
-
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    return {
       'id': id,
       'title': title,
       'body': body,
-      'createdAt': createdAt.millisecondsSinceEpoch,
+      'createdAt': createdAt.toUtc().toIso8601String(), // Store createdAt as UTC ISO 8601 string
     };
   }
 
   factory Note.fromMap(Map<String, dynamic> map) {
     return Note(
-      id: map['id'] as int,
-      title: map['title'] != null ? map['title'] as String : null,
-      body: map['body'] != null ? map['body'] as String : null,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
+      id: map['id'] as String,
+      title: map['title'] as String?,
+      body: map['body'] as String?,
+      createdAt: DateTime.parse(map['createdAt'] as String).toLocal(), // Convert UTC string back to local DateTime
     );
   }
 
@@ -72,5 +57,19 @@ class Note {
       title.hashCode ^
       body.hashCode ^
       createdAt.hashCode;
+  }
+
+  Note copyWith({
+    String? id,
+    String? title,
+    String? body,
+    DateTime? createdAt,
+  }) {
+    return Note(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      body: body ?? this.body,
+      createdAt: createdAt ?? this.createdAt,
+    );
   }
 }
