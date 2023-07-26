@@ -11,7 +11,7 @@ class ListContainerWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var notes = ref.watch(noteStateNotifierProvider);
+    var notes = ref.watch(notesProvider);
     notes.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
     // Group notes by date
@@ -24,11 +24,8 @@ class ListContainerWidget extends ConsumerWidget {
       groupedNotes[formattedDate]!.add(note);
     }
 
-    // Keep track of expanded dates
-    var expandedDates = ref.watch(expandedDatesProvider);
-
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(8.0),
       child: CustomScrollView(
         slivers: [
           for (var date in groupedNotes.keys)
@@ -36,14 +33,9 @@ class ListContainerWidget extends ConsumerWidget {
               largeTitle: Text(date, style: CustomTextStyles.h3),
               trailing: CupertinoButton(
                 onPressed: () {
-                  ref.read(expandedDatesProvider.notifier).toggleExpanded(date);
+                  // Handle "View all" button press
                 },
-                child: Text(
-                  expandedDates.contains(date) ? 'Collapse' : 'View All',
-                  style: CustomTextStyles.bodyRegular.copyWith(
-                    color: CupertinoColors.systemBlue,
-                  ),
-                ),
+                child: Text("View all"),
               ),
             ),
           SliverList(
@@ -51,32 +43,24 @@ class ListContainerWidget extends ConsumerWidget {
               (context, index) {
                 var date = groupedNotes.keys.elementAt(index);
                 var notesForDate = groupedNotes[date]!;
-                if (expandedDates.contains(date)) {
-                  // Show all notes for the expanded dates
-                  return Column(
-                    children: [
-                      for (var note in notesForDate)
-                        CustomListItemWidget(
+
+                // Show all notes for each date
+                return Column(
+                  children: [
+                    for (var note in notesForDate)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CustomListItemWidget(
                           note: note,
                           onDelete: () {
                             ref
-                                .read(noteStateNotifierProvider.notifier)
+                                .read(notesProvider.notifier)
                                 .delete(note.id);
                           },
                         ),
-                    ],
-                  );
-                } else {
-                  // Show only the first note for the collapsed dates
-                  return CustomListItemWidget(
-                    note: notesForDate.first,
-                    onDelete: () {
-                      ref
-                          .read(noteStateNotifierProvider.notifier)
-                          .delete(notesForDate.first.id);
-                    },
-                  );
-                }
+                      ),
+                  ],
+                );
               },
               childCount: groupedNotes.length,
             ),

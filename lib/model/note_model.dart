@@ -18,7 +18,7 @@ class Note {
       'id': id,
       'title': title,
       'body': body,
-      'createdAt': createdAt.toUtc().toIso8601String(), // Store createdAt as UTC ISO 8601 string
+      'createdAt': createdAt.toUtc().toIso8601String(),
     };
   }
 
@@ -27,7 +27,7 @@ class Note {
       id: map['id'] as String,
       title: map['title'] as String?,
       body: map['body'] as String?,
-      createdAt: DateTime.parse(map['createdAt'] as String).toLocal(), // Convert UTC string back to local DateTime
+      createdAt: DateTime.parse(map['createdAt'] as String).toLocal(),
     );
   }
 
